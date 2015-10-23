@@ -52,16 +52,20 @@ public class SignInAction extends AbstractHttpPostAction {
 			String passwordStringValue = passwordValue.getText().toString();
 
 			urlParameters.add(new BasicNameValuePair(
-					ModelConstantStrings.userEmail, userEmailValue));		
-			if(forgotPasswordCase()){
+					ModelConstantStrings.userEmail, userEmailValue));
+			if (forgotPasswordCase()) {
 				urlParameters.add(new BasicNameValuePair(
-						ModelConstantStrings.userPassword,sharedPreferencesOtp.getString(ModelConstantStrings.userPassword, "-1") ));
+						ModelConstantStrings.userPassword, sharedPreferencesOtp
+								.getString(ModelConstantStrings.userPassword,
+										"-1")));
 				urlParameters.add(new BasicNameValuePair(
-						ResponseConstantsForSignInPage.USER_FORGOT_PASSWORD.toString(),"true"));
-			}
-			else
-				urlParameters.add(new BasicNameValuePair(
-						ModelConstantStrings.userPassword, passwordStringValue));
+						ResponseConstantsForSignInPage.USER_FORGOT_PASSWORD
+								.toString(), "true"));
+			} else
+				urlParameters
+						.add(new BasicNameValuePair(
+								ModelConstantStrings.userPassword,
+								passwordStringValue));
 
 		} else {
 			urlParameters.add(new BasicNameValuePair(
@@ -72,7 +76,11 @@ public class SignInAction extends AbstractHttpPostAction {
 
 	private boolean forgotPasswordCase() {
 		// TODO Auto-generated method stub
-		return sharedPreferencesOtp.getString(ResponseConstantsForSignInPage.USER_FORGOT_PASSWORD.toString(), "false").equals("true")&&!sharedPreferencesOtp.getString(ModelConstantStrings.userPassword, "").isEmpty();
+		return sharedPreferencesOtp.getString(
+				ResponseConstantsForSignInPage.USER_FORGOT_PASSWORD.toString(),
+				"false").equals("true")
+				&& !sharedPreferencesOtp.getString(
+						ModelConstantStrings.userPassword, "").isEmpty();
 	}
 
 	public Object connectionRespose() {
@@ -99,15 +107,14 @@ public class SignInAction extends AbstractHttpPostAction {
 			if (h.getName().equals(
 					ResponseConstantsForSignInPage.USER_KEY.toString())) {
 				keyValue = h.getValue();
-			}
-			if (h.getName().equals(
+			} else if (h.getName().equals(
 					ResponseConstantsForSignInPage.USER_LOGGED_IN.toString())) {
 				userLoggedIn = h.getValue();
-			}
-			if (h.getName().equals(
+			} else if (h.getName().equals(
 					ResponseConstantsForSignInPage.USER_HASHCODE.toString())) {
 				userHashcodeResponse = h.getValue();
 			}
+
 		}
 
 		if (keyValue != null
@@ -123,12 +130,21 @@ public class SignInAction extends AbstractHttpPostAction {
 			Log.d("Vijay", "I am logged in successfully");
 			Toast.makeText(activityObject.getBaseContext(),
 					"I am Logged in Successfully", Toast.LENGTH_LONG).show();
-			
-			sharedPreferencesOtp.edit().remove(ResponseConstantsForSignInPage.USER_FORGOT_PASSWORD.toString()).commit();
+
+			sharedPreferencesOtp
+					.edit()
+					.remove(ResponseConstantsForSignInPage.USER_FORGOT_PASSWORD
+							.toString()).commit();
+		} else if (keyValue != null && (Integer.parseInt(keyValue) < 0)
+				|| "Wrong UserName or Password".equals(userLoggedIn)) {
+			Log.d("Vijay", userLoggedIn);
+			Toast.makeText(activityObject.getBaseContext(), userLoggedIn,
+					Toast.LENGTH_LONG).show();
 		} else if (!sharedPreferencesOtp.getString(
 				ResponseConstantsForSignInPage.USER_HASHCODE.toString(), "-1")
 				.equals(userHashcodeResponse)) {
-			activityObject.getFragmentManager().beginTransaction().remove(dialogObject).commit();
+			activityObject.getFragmentManager().beginTransaction()
+					.remove(dialogObject).commit();
 			dialogObject.show(activityObject.getFragmentManager(),
 					LayoutConstantStrings.OTP_DIALOG);
 		}

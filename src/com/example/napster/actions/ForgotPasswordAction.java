@@ -7,20 +7,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.example.defaultapplication.R;
-import com.example.napster.model.LayoutConstantStrings;
-import com.example.napster.model.LoginDataModel;
-import com.example.napster.model.ModelConstantStrings;
-import com.example.napster.model.ResponseConstantsForSignInPage;
-import com.example.napster.model.UserDataModel;
-
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.defaultapplication.R;
+import com.example.napster.model.LayoutConstantStrings;
+import com.example.napster.model.ModelConstantStrings;
+import com.example.napster.model.ResponseConstantsForSignInPage;
 
 public class ForgotPasswordAction extends AbstractHttpPostAction {
 
@@ -57,22 +54,20 @@ public class ForgotPasswordAction extends AbstractHttpPostAction {
 		String forgotPasswordFlag = sharedPreferencesOtp.getString(
 				ResponseConstantsForSignInPage.USER_HASHCODE.toString(), "");
 		String newPasswordValue = sharedPreferencesOtp.getString(
-			ModelConstantStrings.userPassword , "");
+				ModelConstantStrings.userPassword, "");
 		if (forgotPasswordFlag.isEmpty()) {
-		urlParameters
-				.add(new BasicNameValuePair("USER_FORGOT_PASSWORD", "true"));
+			urlParameters.add(new BasicNameValuePair("USER_FORGOT_PASSWORD",
+					"true"));
+		} else {
+
+			urlParameters.add(new BasicNameValuePair("USER_FORGOT_PASSWORD",
+					forgotPasswordFlag));
 		}
-		else{
-			
-			urlParameters
-			.add(new BasicNameValuePair("USER_FORGOT_PASSWORD", forgotPasswordFlag));
-		}
-		if(newPasswordValue!=null &&!newPasswordValue.isEmpty())
-			urlParameters
-			.add(new BasicNameValuePair(ModelConstantStrings.userPassword, newPasswordValue));
+		if (newPasswordValue != null && !newPasswordValue.isEmpty())
+			urlParameters.add(new BasicNameValuePair(
+					ModelConstantStrings.userPassword, newPasswordValue));
 		return super.makeConnection();
 	}
-	
 
 	public Object connectionRespose() {
 		HttpResponse response = makeConnection();
@@ -100,24 +95,24 @@ public class ForgotPasswordAction extends AbstractHttpPostAction {
 					ResponseConstantsForSignInPage.USER_KEY.toString())) {
 				keyValue = h.getValue();
 			}
-			if (h.getName().equals(
+			else if (h.getName().equals(
 					ResponseConstantsForSignInPage.USER_LOGGED_IN.toString())) {
 				userLoggedIn = h.getValue();
 			}
-			if (h.getName().equals(
+			else if (h.getName().equals(
 					ResponseConstantsForSignInPage.USER_HASHCODE.toString())) {
 				userHashcodeResponse = h.getValue();
 			}
 			if (h.getName().equals(
-					ResponseConstantsForSignInPage.USER_FORGOT_PASSWORD.toString())) {
-					userforgotPasswordValue = h.getValue();
+					ResponseConstantsForSignInPage.USER_FORGOT_PASSWORD
+							.toString())) {
+				userforgotPasswordValue = h.getValue();
 
-					SharedPreferences.Editor editor = sharedPreferencesOtp
-							.edit();
-					editor.putString(
-							ResponseConstantsForSignInPage.USER_HASHCODE
-									.toString(), h.getValue());
-					editor.commit();
+				SharedPreferences.Editor editor = sharedPreferencesOtp.edit();
+				editor.putString(
+						ResponseConstantsForSignInPage.USER_HASHCODE.toString(),
+						h.getValue());
+				editor.commit();
 			}
 		}
 
@@ -134,10 +129,17 @@ public class ForgotPasswordAction extends AbstractHttpPostAction {
 			Log.d("Vijay", "I am logged in successfully");
 			Toast.makeText(activityObject.getBaseContext(),
 					"I am Logged in Successfully", Toast.LENGTH_LONG).show();
-		} else if (!sharedPreferencesOtp.getString(
+		} 
+		else if (keyValue != null
+				&& (Integer.parseInt(keyValue) > 0)&&"Wrong UserName or Password".equals(userLoggedIn)) {
+			Log.d("Vijay", "Wrong UserName or Password");
+			Toast.makeText(activityObject.getBaseContext(),
+					userLoggedIn, Toast.LENGTH_LONG).show();
+		}else if (!sharedPreferencesOtp.getString(
 				ResponseConstantsForSignInPage.USER_HASHCODE.toString(), "-1")
 				.equals(userHashcodeResponse)) {
-			activityObject.getFragmentManager().beginTransaction().remove(dialogObject).commit();
+			activityObject.getFragmentManager().beginTransaction()
+					.remove(dialogObject).commit();
 			dialogObject.show(activityObject.getFragmentManager(),
 					LayoutConstantStrings.OTP_DIALOG);
 		}
