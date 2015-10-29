@@ -19,6 +19,9 @@ import android.widget.TextView;
 import com.example.defaultapplication.R;
 import com.example.napster.actions.ForgotPasswordAction;
 import com.example.napster.actions.SignInAction;
+import com.example.napster.dialog.EmailDialog;
+import com.example.napster.dialog.ForgotPasswordDialog;
+import com.example.napster.dialog.OtpDialog;
 import com.example.napster.model.LayoutConstantStrings;
 import com.example.napster.model.ResponseConstantsForSignInPage;
 import com.example.napster.model.SavedContext;
@@ -74,6 +77,8 @@ public class SignInActivity extends Activity {
 						ConnectionDetailsUtility.connectionUrlSignIn,
 						urlParameters, userKeyValue, sharedPreferencesOtp);
 				Object object = signInObject.connectionRespose();
+//    			Intent userLoginIntent = new Intent(getBaseContext(), LOGINCloudActivity.class);
+//    			startActivity(userLoginIntent); 
 			}
 		});
 
@@ -109,6 +114,7 @@ public class SignInActivity extends Activity {
 				ConnectionDetailsUtility.connectionUrlSignIn,
 				urlParameters, sharedPreferencesOtp);
 		Object obj =forgotPassword.connectionRespose();
+		
 
 	}
 

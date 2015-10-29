@@ -1,6 +1,7 @@
-package com.example.napster;
+package com.example.napster.dialog;
 
 import com.example.defaultapplication.R;
+import com.example.napster.SignInActivity;
 import com.example.napster.model.LayoutConstantStrings;
 import com.example.napster.model.ResponseConstantsForSignInPage;
 import com.example.napster.model.SavedContext;

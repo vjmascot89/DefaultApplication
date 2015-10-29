@@ -18,6 +18,8 @@ import com.example.defaultapplication.R;
 import com.example.napster.model.LayoutConstantStrings;
 import com.example.napster.model.ModelConstantStrings;
 import com.example.napster.model.ResponseConstantsForSignInPage;
+import com.example.napster.model.UserDataModel;
+import com.google.gson.Gson;
 
 public class SignInAction extends AbstractHttpPostAction {
 
@@ -98,15 +100,16 @@ public class SignInAction extends AbstractHttpPostAction {
 				Toast.LENGTH_LONG).show();
 		Log.d("vijay", textValue.toString());
 
-		String keyValue = null;
+		UserDataModel keyValue = null;
 		String userLoggedIn = null;
 		String userHashcodeResponse = null;
 		for (Header h : hr) {
 			textValue.append("" + h.getName() + " :" + h.getValue());
 
 			if (h.getName().equals(
-					ResponseConstantsForSignInPage.USER_KEY.toString())) {
-				keyValue = h.getValue();
+					ResponseConstantsForSignInPage.USER_DATA_MODEL.toString())) {
+				 Gson gson = new Gson();
+				   keyValue = gson.fromJson(h.getValue(), UserDataModel.class);
 			} else if (h.getName().equals(
 					ResponseConstantsForSignInPage.USER_LOGGED_IN.toString())) {
 				userLoggedIn = h.getValue();
@@ -118,7 +121,7 @@ public class SignInAction extends AbstractHttpPostAction {
 		}
 
 		if (keyValue != null
-				&& (Integer.parseInt(keyValue) > 0)
+				&& (keyValue.getUserId() > 0)
 				&& (userLoggedIn != null
 						&& userLoggedIn
 								.equals(ResponseConstantsForSignInPage.SUCCESS
@@ -135,7 +138,7 @@ public class SignInAction extends AbstractHttpPostAction {
 					.edit()
 					.remove(ResponseConstantsForSignInPage.USER_FORGOT_PASSWORD
 							.toString()).commit();
-		} else if (keyValue != null && (Integer.parseInt(keyValue) < 0)
+		} else if (keyValue != null && (keyValue.getUserId() < 0)
 				|| "Wrong UserName or Password".equals(userLoggedIn)) {
 			Log.d("Vijay", userLoggedIn);
 			Toast.makeText(activityObject.getBaseContext(), userLoggedIn,

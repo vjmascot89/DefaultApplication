@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tx"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="this will show the text"
+        android:textSize="28dip"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/ln1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tx"
+        android:text="___________________"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/cont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ln1"
+        android:text="Options:"
+        android:textSize="28dip"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/ln2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cont"
+        android:text="___________________"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/users"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ln2"
+        android:onClick="users1"
+        android:text="otherUsers" />
+
+    <Button
+        android:id="@+id/upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/users"
+       android:onClick="downfile"
+        android:text="downLoad" />
+   
+    <Button
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/upload"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="36dp"
+        android:onClick="switching"
+        android:text="cloudContent" />
+
+    <Button
+        android:id="@+id/inf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/upload"
+        android:layout_alignBottom="@+id/upload"
+        android:layout_alignLeft="@+id/content"
+        android:onClick="initialuser"
+        android:text="home" />
+
+</RelativeLayout>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"  
+       android:layout_height="400px" 
+       android:layout_width="fill_parent">  
+<RelativeLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/namelabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="username *:"/>
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+      android:layout_below="@id/namelabel"
+         />
+     <TextView
+        android:id="@+id/agelabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/username"
+        android:text="age *:"
+       />
+    <EditText
+        android:id="@+id/age"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+    android:layout_below="@id/agelabel"
+   
+
+        />
+      <TextView
+        android:id="@+id/sexlabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+         android:layout_below="@id/age"
+        android:text="sex *:"
+        />
+    <EditText
+        android:id="@+id/sex"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+      android:layout_below="@id/sexlabel"
+       
+     />
+     <TextView
+        android:id="@+id/addlabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sex"
+        android:text="address:"
+      />
+    <EditText
+        android:id="@+id/add"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+    android:layout_below="@id/addlabel"
+      
+
+        />
+      <TextView
+        android:id="@+id/citylabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/add"
+        android:text="city:"
+      />
+    <EditText
+        android:id="@+id/city"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+      android:layout_below="@id/citylabel"
+      
+/>
+       <TextView
+        android:id="@+id/statelabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/city"
+        android:text="state:"
+  />
+    <EditText
+        android:id="@+id/state"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+      android:layout_below="@id/statelabel"
+        
+       />
+     <TextView
+        android:id="@+id/countrylabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/state"
+        android:text="country:"
+      />
+    <EditText
+        android:id="@+id/country"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+    android:layout_below="@id/countrylabel"
+    
+ 
+        />
+      <TextView
+        android:id="@+id/statuslabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/country"
+        android:text="status *:"
+  />
+    <EditText
+        android:id="@+id/status"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+      android:layout_below="@id/statuslabel"
+        
+       />
+     <TextView
+        android:id="@+id/moblabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/status"
+        android:text="MOBILE no:"
+      />
+    <EditText
+        android:id="@+id/mob"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+    android:layout_below="@id/moblabel"
+          
+        
+        />
+    <Button
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mob"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dip"
+        android:text="update"
+        android:onClick="setdata" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/update"
+        android:layout_alignTop="@id/update"
+        android:onClick="mainpage"
+        android:text="Cancel" />
+</RelativeLayout>
+  </ScrollView> 

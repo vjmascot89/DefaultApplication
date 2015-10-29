@@ -1,4 +1,4 @@
-package com.example.napster;
+package com.example.napster.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.defaultapplication.R;
+import com.example.napster.SignInActivity;
 import com.example.napster.model.ModelConstantStrings;
 import com.example.napster.model.SavedContext;
 
