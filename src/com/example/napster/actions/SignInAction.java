@@ -138,11 +138,13 @@ public class SignInAction extends AbstractHttpPostAction {
 					.edit()
 					.remove(ResponseConstantsForSignInPage.USER_FORGOT_PASSWORD
 							.toString()).commit();
+			return keyValue;
 		} else if (keyValue != null && (keyValue.getUserId() < 0)
 				|| "Wrong UserName or Password".equals(userLoggedIn)) {
 			Log.d("Vijay", userLoggedIn);
 			Toast.makeText(activityObject.getBaseContext(), userLoggedIn,
 					Toast.LENGTH_LONG).show();
+			return null;
 		} else if (!sharedPreferencesOtp.getString(
 				ResponseConstantsForSignInPage.USER_HASHCODE.toString(), "-1")
 				.equals(userHashcodeResponse)) {

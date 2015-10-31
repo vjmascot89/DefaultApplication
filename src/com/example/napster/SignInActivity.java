@@ -25,6 +25,7 @@ import com.example.napster.dialog.OtpDialog;
 import com.example.napster.model.LayoutConstantStrings;
 import com.example.napster.model.ResponseConstantsForSignInPage;
 import com.example.napster.model.SavedContext;
+import com.example.napster.model.UserDataModel;
 import com.example.napster.utils.ConnectionDetailsUtility;
 
 public class SignInActivity extends Activity {
@@ -76,9 +77,13 @@ public class SignInActivity extends Activity {
 						SignInActivity.this, otpDialogObject,
 						ConnectionDetailsUtility.connectionUrlSignIn,
 						urlParameters, userKeyValue, sharedPreferencesOtp);
-				Object object = signInObject.connectionRespose();
-//    			Intent userLoginIntent = new Intent(getBaseContext(), LOGINCloudActivity.class);
-//    			startActivity(userLoginIntent); 
+				Object returnUserModelObject = signInObject.connectionRespose();
+				if(returnUserModelObject!=null){
+	    			Intent userLoginIntent = new Intent(getBaseContext(), LOGINCloudActivity.class);
+	    			userLoginIntent.putExtra("UserModelValue" , (UserDataModel)returnUserModelObject);
+	    			startActivity(userLoginIntent); 
+				}
+
 			}
 		});
 

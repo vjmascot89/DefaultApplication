@@ -33,7 +33,6 @@
             android:name="com.example.napster.LOGINCloudActivity"
             android:label="@string/app_name" >
         </activity>
-        LOGINCloudActivity
     </application>
 
 </manifest>

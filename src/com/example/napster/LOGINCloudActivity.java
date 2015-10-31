@@ -1,20 +1,38 @@
 package com.example.napster;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import com.example.defaultapplication.R;
+import com.example.napster.concurrencypackage.SignInAsyncTask;
+import com.example.napster.model.ModelConstantStrings;
+import com.example.napster.model.ResponseConstantsForSignInPage;
+import com.example.napster.model.UserDataModel;
+import com.example.napster.utils.ConnectionDetailsUtility;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -39,13 +57,13 @@ public class LOGINCloudActivity extends Activity {
 	}
 
 	public void initialuser(View v) {
-		int ss = Integer.parseInt(getIntent().getSerializableExtra("fname")
-				.toString());
-		String zz = userdata(ss);
+		Object userDataModel = getIntent().getSerializableExtra("UserModelValue");
+					
+//		String zz = userdata(ss);
 		setContentView(R.layout.fbinfo);
 		TextView t = (TextView) findViewById(R.id.tx);
 		// TextView tv =new TextView(this);
-		t.setText(zz);
+		t.setText(((UserDataModel)userDataModel).getUserName());
 
 	}
 
@@ -206,72 +224,56 @@ public class LOGINCloudActivity extends Activity {
 	}
 
 	// method userslist
-	public void users1(View v) {
-		String ss = getIntent().getSerializableExtra("fname").toString();
-		HttpClient client = new DefaultHttpClient();
-
-		String getURL = "http://" + hIP + "/one/users.jsp?uid=" + ss;
-		HttpGet get = new HttpGet(getURL);
+	public void users1(final View v) {
+		UserDataModel userDataModel =(UserDataModel) getIntent().getSerializableExtra("UserModelValue");
+		final List<NameValuePair> urlParameters = new ArrayList<>();
+		HttpPost post = new HttpPost(ConnectionDetailsUtility.connectionUrlUsersGet);
 		try {
-
-			HttpResponse responseGet = client.execute(get);
-
-			StatusLine statusLine = responseGet.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 200) {
-
-				// do something with the response
-				// Log.i("GET RESPONSE",EntityUtils.toString(resEntityGet));
-				final int x = responseGet.getHeaders("name").length;
-				Header[] head = responseGet.getHeaders("name");
-				int y = responseGet.getHeaders("boo").length;
-				Header[] boolhead = responseGet.getHeaders("boo");
-				int s = 0;
-				final String zz[] = new String[x];
-				final String yy[] = new String[x];
-
-				while (s < x) {
-
-					zz[s] = head[s].getValue();
-
-					s++;
-
-				}
-				s = 0;
-				while (s < y) {
-
-					yy[s] = boolhead[s].getValue();
-
-					s++;
-
-				}
-
-				ListView lv = new ListView(this);
-				lv.setAdapter(new ArrayAdapter<String>(this,
-						R.layout.list_item, zz));
-				setContentView(lv);
-
-				lv.setOnItemClickListener(new OnItemClickListener() {
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						// When clicked, show a toast with the TextView text
-						othername = zz[position];
-						otherid = yy[position];
-						otheruser(zz[position], yy[position]);
-
-						// Toast.makeText(getApplicationContext(),
-						// yy[position],Toast.LENGTH_SHORT).show();
-					}
-				});
-
-			}
-		} catch (Exception e) {
-			TextView tv = new TextView(this);
-			tv.setText(e.getLocalizedMessage());
-			setContentView(tv);
-
+			urlParameters.add(new BasicNameValuePair(
+					ModelConstantStrings.userId,userDataModel.getUserId().toString()));
+			post.setEntity(new UrlEncodedFormEntity(urlParameters));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		List<UserDataModel> list = new ArrayList<>(); 
+		SignInAsyncTask signInAsyncTask = new SignInAsyncTask();
+		try {
+			HttpResponse response = signInAsyncTask.execute(post).get();
+			Header[] hr = response.getAllHeaders();
+			
+			Type listType = new TypeToken<ArrayList<UserDataModel>>() {
+            }.getType();
+			for (Header h : hr) {
 
+				if (h.getName().equals(
+						"UsersList")) {
+					 Gson gson = new Gson();
+					   list = gson.fromJson(h.getValue(),listType);
+					   Toast.makeText(getBaseContext(), list.toString(),Toast.LENGTH_LONG).show();
+				} 
+			}
+			Log.d("Vijay", list.toString());
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		setContentView(R.layout.list_item);
+		final ListView listview = (ListView) findViewById(R.id.listview);
+				  final StableArrayAdapter adapter = new StableArrayAdapter(this,
+					        android.R.layout.simple_list_item_1, list);
+					    listview.setAdapter(adapter);
+
+					    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+					      @Override
+					      public void onItemClick(AdapterView<?> parent, final View view,
+					          int position, long id) {
+					        final String item = (String) parent.getItemAtPosition(position);
+					        
+					      }
+
+					    });
 	}
 
 	public void otheruser(String uname, String id) {
@@ -397,4 +399,31 @@ public class LOGINCloudActivity extends Activity {
 		// startActivity(i3);
 
 	}
+	
+	private class StableArrayAdapter extends ArrayAdapter<UserDataModel> {
+
+	    HashMap<UserDataModel, Integer> mIdMap = new HashMap<UserDataModel, Integer>();
+
+	    public StableArrayAdapter(Context context, int textViewResourceId,
+	        List<UserDataModel> objects) {
+	      super(context, textViewResourceId, objects);
+	      for (int i = 0; i < objects.size(); ++i) {
+	        mIdMap.put(objects.get(i), i);
+	      }
+	    }
+
+	    @Override
+	    public  long getItemId(int position) {
+	      UserDataModel item = getItem(position);
+	      return mIdMap.get(item);
+	    }
+
+	    @Override
+	    public boolean hasStableIds() {
+	      return true;
+	    }
+
+	  }
+
+	
 }

@@ -1,6 +1,12 @@
 package com.example.napster.model;
 
-public class UserDataModel {
+import java.io.Serializable;
+
+public class UserDataModel implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer userId;
 	private String userName;
 	private String userAge;
@@ -11,7 +17,6 @@ public class UserDataModel {
 	private String userCountry;
 	private String userStatus;
 
-	private LoginDataModel userLoginDataModel;
 
 
 	public Integer getUserId() {
@@ -86,14 +91,7 @@ public class UserDataModel {
 		this.userStatus = userStatus;
 	}
 
-	public LoginDataModel getUserLoginDataModel() {
-		return userLoginDataModel;
-	}
-
-	public void setUserLoginDataModel(LoginDataModel userLoginDataModel) {
-		this.userLoginDataModel = userLoginDataModel;
-	}
-
+	
 	@Override
 	public String toString() {
 		return userAddress + userCity + userCountry + userGender + userName + userState + userStatus + userId
